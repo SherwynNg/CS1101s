@@ -151,8 +151,39 @@ assert("3A(II)_4", () => count_peaks(emapA2b),
 function count_islands(emap) {
 
     // WRITE HERE.
+    let island_count = 0;
+    const labels = [];
+    const r = array_length(emap);
+    const c = array_length(emap[0]);
     
-
+    function helper(row, col, island_id) {
+        if (row >= 0 && row < r && col >=0 && col < c) {
+            if (emap[row][col] !== 0 && labels[row][col] === 0) {
+                labels[row][col] = island_id;
+                helper(row - 1, col, island_id);
+                helper(row + 1, col, island_id);
+                helper(row, col - 1, island_id);
+                helper(row, col + 1, island_id);
+            }
+        }
+    }
+    
+    for (let i = 0; i < r; i = i + 1) {
+        labels[i] = [];
+        for (let k = 0; k < c; k = k + 1) {
+            labels[i][k] = 0;
+        }
+    }
+    
+    for (let i = 0; i < r; i = i + 1) {
+        for (let k = 0; k < c; k = k + 1) {
+            if (emap[i][k] !== 0 && labels[i][k] === 0) {
+                island_count = island_count + 1;
+                helper(i, k, island_count);
+            }
+        }
+    }
+    return island_count;
 }
 
 
